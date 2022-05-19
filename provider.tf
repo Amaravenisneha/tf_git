@@ -123,3 +123,25 @@ resource "aws_instance" "web_instance" {
     }
 
 }
+
+resource "aws_instance" "web" {
+  # ...
+
+  provisioner "local-exec" {
+    command = "echo The server's IP address is ${self.public.id}"
+  }
+
+  provisioner "file" {
+    source      = "conf/myapp.conf"
+    destination = "/etc/myapp.conf"
+
+  connection {
+    type     = "ssh"
+    user     = "root"
+    password = "${var.root_password}"
+    host     = "${var.host}"
+  }
+  
+  }
+  
+}
